@@ -2,6 +2,7 @@ use std::env;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
+use atty::Stream;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -19,7 +20,10 @@ fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
         let filename = &args[2];
         read_from_file(filename)
     } else {
-        Ok(())
+        if atty::is(Stream::Stdin) {
+            return Err(io::Error::new(io::ErrorKind::Other, "stdin not redirected"));
+        }
+        read_from_stdin()
     }
 }
 
@@ -37,4 +41,12 @@ fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where P: AsRef<Path>, {
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
+}
+
+fn read_from_stdin() -> Result<(), io::Error> {
+    for line in io::stdin().lock().lines() {
+        let line = line.expect("Could not read line from standard in");
+        println!("{}", line);
+    }
+    Ok(())
 }
