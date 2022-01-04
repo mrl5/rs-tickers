@@ -3,6 +3,20 @@ use std::fs::File;
 use std::io::{self, BufRead};
 use once_cell::sync::Lazy;
 use atty::Stream;
+use serde::{Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+struct StockQuote {
+    symbol: String,
+    source: QuoteSource,
+    ticker: Option<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")] // https://stackoverflow.com/a/59167858 -> https://serde.rs/container-attrs.html#rename_all
+enum QuoteSource {
+    Yahoo
+}
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -17,7 +31,8 @@ fn main() {
 
 fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
     for line in get_lines(args)? {
-        println!("{}", line?);
+        let deserialized_json: StockQuote = serde_json::from_str(&line?).unwrap();
+        println!("{:?}", deserialized_json);
     }
     Ok(())
 }
