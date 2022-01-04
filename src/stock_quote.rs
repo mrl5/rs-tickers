@@ -7,8 +7,18 @@ pub struct StockQuote {
     ticker: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")] // https://stackoverflow.com/a/59167858
 pub enum QuoteSource {
     Yahoo,
+}
+
+impl StockQuote {
+    pub fn get_symbol(&self) -> &String {
+        &self.symbol
+    }
+
+    pub fn get_ticker(&self) -> &Option<String> {
+        &self.ticker
+    }
 }

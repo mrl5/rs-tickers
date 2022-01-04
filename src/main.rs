@@ -14,8 +14,12 @@ fn main() {
 
 fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
     for line in input::get_lines(args)? {
-        let deserialized_json: stock_quote::StockQuote = serde_json::from_str(&line?).unwrap();
-        println!("{:?}", deserialized_json);
+        let sq: stock_quote::StockQuote = serde_json::from_str(&line?).unwrap();
+        let ticker = match sq.get_ticker() {
+            Some(t) => t,
+            None => sq.get_symbol(),
+        };
+        println!("{}", ticker);
     }
     Ok(())
 }
