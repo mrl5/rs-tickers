@@ -12,5 +12,5 @@ cargo run src/main.rs path/to/tickers.json
 
 ... or pipe it from another process
 ```bash
-cat path/to/tickers.json | cargo run src/main.rs
+cat path/to/tickers-as-an-json-array.json | jq -c '.[]' | cargo run src/main.rs
 ```

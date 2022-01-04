@@ -1,7 +1,7 @@
 use std::env;
 use std::fs::File;
 use std::io::{self, BufRead};
-use std::path::Path;
+use once_cell::sync::Lazy;
 use atty::Stream;
 
 fn main() {
@@ -16,37 +16,21 @@ fn main() {
 }
 
 fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
+    for line in get_lines(args)? {
+        println!("{}", line?);
+    }
+    Ok(())
+}
+
+fn get_lines(args: &Vec<String>) -> Result<either::Either<io::Lines<io::BufReader<File>>, io::Lines<io::StdinLock>>, io::Error> {
     if args.len() > 2 {
-        let filename = &args[2];
-        read_from_file(filename)
+        let file = File::open(&args[2])?;
+        Ok(either::Either::Left(io::BufReader::new(file).lines()))
     } else {
         if atty::is(Stream::Stdin) {
             return Err(io::Error::new(io::ErrorKind::Other, "stdin not redirected"));
         }
-        read_from_stdin()
+        static STDIN: Lazy<io::Stdin> = Lazy::new(io::stdin);
+        Ok(either::Either::Right(STDIN.lock().lines()))
     }
-}
-
-fn read_from_file<P>(filename: P) -> Result<(), io::Error>
-where P: AsRef<Path>, {
-    for line in read_lines(filename)? {
-        if let Ok(l) = line {
-            println!("{}", l);
-        }
-    }
-    Ok(())
-}
-
-fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
-where P: AsRef<Path>, {
-    let file = File::open(filename)?;
-    Ok(io::BufReader::new(file).lines())
-}
-
-fn read_from_stdin() -> Result<(), io::Error> {
-    for line in io::stdin().lock().lines() {
-        let line = line.expect("Could not read line from standard in");
-        println!("{}", line);
-    }
-    Ok(())
 }
