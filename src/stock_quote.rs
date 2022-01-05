@@ -18,7 +18,26 @@ impl StockQuote {
         &self.symbol
     }
 
-    pub fn get_ticker(&self) -> &Option<String> {
-        &self.ticker
+    pub fn get_price(
+        &self,
+        client: &reqwest::blocking::Client,
+    ) -> Result<serde_json::Value, reqwest::Error> {
+        let url =
+            format!(
+            "https://query1.finance.yahoo.com/v8/finance/chart/{}",
+            &self.id(),
+        );
+        let result = client.get(url).send()?.text()?;
+        let x: serde_json::Value = serde_json::from_str(&result).unwrap();
+        Ok(
+            x["chart"]["result"][0]["meta"]["regularMarketPrice"].to_owned(),
+        )
+    }
+
+    fn id(&self) -> &String {
+        match &self.ticker {
+            Some(t) => t,
+            None => &self.symbol,
+        }
     }
 }
