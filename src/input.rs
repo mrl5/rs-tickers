@@ -6,8 +6,8 @@ use atty::Stream;
 pub fn get_lines(
     args: &Vec<String>,
 ) -> Result<either::Either<io::Lines<io::BufReader<File>>, io::Lines<io::StdinLock>>, io::Error> {
-    if args.len() > 2 {
-        let file = File::open(&args[2])?;
+    if args.len() > 1 {
+        let file = File::open(&args[1])?;
         Ok(either::Either::Left(io::BufReader::new(file).lines()))
     } else {
         if atty::is(Stream::Stdin) {

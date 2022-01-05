@@ -7,10 +7,10 @@ Gets stock quotes for provided tickers
 
 You can pass path to `tickers.json`
 ```bash
-cargo run src/main.rs path/to/tickers.json
+rs-tickers path/to/tickers.json
 ```
 
 ... or pipe it from another process
 ```bash
-cat path/to/tickers-as-an-json-array.json | jq -c '.[]' | cargo run src/main.rs
+cat path/to/tickers-as-an-json-array.json | jq -c '.[]' | rs-tickers
 ```
