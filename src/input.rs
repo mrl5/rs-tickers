@@ -3,6 +3,8 @@ use std::io::{self, BufRead};
 use once_cell::sync::Lazy;
 use atty::Stream;
 
+static STDIN: Lazy<io::Stdin> = Lazy::new(io::stdin);
+
 pub fn get_lines(
     args: &Vec<String>,
 ) -> Result<either::Either<io::Lines<io::BufReader<File>>, io::Lines<io::StdinLock>>, io::Error> {
@@ -14,7 +16,6 @@ pub fn get_lines(
             return Err(io::Error::new(io::ErrorKind::Other, "stdin not redirected"));
         }
 
-        static STDIN: Lazy<io::Stdin> = Lazy::new(io::stdin);
         Ok(either::Either::Right(STDIN.lock().lines()))
     }
 }

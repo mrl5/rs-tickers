@@ -3,6 +3,10 @@ use std::fs;
 use std::io;
 use std::io::prelude::*;
 
+mod http;
+mod input;
+mod stock_quote;
+
 const OUT_DIR: &str = "/tmp/watchlist_quotes";
 
 fn main() {
@@ -42,7 +46,3 @@ fn write_result(symbol: &str, result: &serde_json::Value) {
     file.write_all(&serde_json::to_string(result).unwrap().as_bytes())
         .unwrap();
 }
-
-mod http;
-mod input;
-mod stock_quote;
