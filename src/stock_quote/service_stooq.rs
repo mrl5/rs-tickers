@@ -29,7 +29,6 @@ impl Stooq {
 
             match html.select(&selector).next() {
                 Some(v) => {
-                    println!("{}", id);
                     price = Some(v.inner_html());
                     break;
                 }
