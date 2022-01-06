@@ -1,4 +1,4 @@
 {"symbol":"aapl","source":"yahoo"}
+{"symbol":"cdr","source":"stooq"}
 {"symbol":"ogzd","source":"yahoo","ticker":"ogzd.il"}
-{"symbol":"gc","source":"yahoo","ticker":"gc=f"}
 {"symbol":"gbpusd","source":"yahoo","ticker":"gbpusd=x"}

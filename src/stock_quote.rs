@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 
 mod service;
+mod service_stooq;
 mod service_yahoo;
 
 #[derive(Serialize, Deserialize, Debug)]
