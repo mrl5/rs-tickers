@@ -29,7 +29,7 @@ fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
         let sq: stock_quote::StockQuote = serde_json::from_str(&line?).unwrap();
 
         println!("[i] fetching current price of {} ...", sq.get_symbol());
-        match sq.get_price(&client) {
+        match sq.fetch_price(&client) {
             Ok(p) => write_result(sq.get_symbol(), &p),
             Err(e) => eprintln!("couldnt get price for {}: {}", sq.get_symbol(), e),
         };
