@@ -11,6 +11,8 @@ Gets stock quotes for provided tickers
 
 ## Usage
 
+### Fetching stock quotes from CLI
+
 You can pass path to a file ...
 ```bash
 $ rs-tickers example/watchlist.txt
@@ -25,10 +27,19 @@ It will create `ticker.txt` files in `/tmp/watchlist_quotes` that later can be
 read by the spreadsheet.
 
 
+### UC1: Integration with your favorite spreadsheet program
+
+After fetching stock quotes their values can be loaded from file into a
+spreadsheet cell like this:
+```
+='file:///tmp/watchlist_quotes/ticker.txt'#$ticker.A1
+```
+
+
 ## HOWTO build
 
 ```bash
-$ cargo build
+$ cargo build --release
 ```
 
-Your binary will be in `target/debug/rs-tickers`.
+Your binary will be in `target/release/rs-tickers`.
