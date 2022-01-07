@@ -1,5 +1,3 @@
-use super::service;
-
 pub struct Stooq {}
 
 impl Stooq {
@@ -40,7 +38,7 @@ impl Stooq {
     }
 }
 
-impl service::Fetches for Stooq {
+impl super::Fetches for Stooq {
     fn fetch_price(
         &self,
         client: &reqwest::blocking::Client,

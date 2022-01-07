@@ -1,5 +1,3 @@
-use super::service;
-
 pub struct Yahoo {}
 
 impl Yahoo {
@@ -8,7 +6,7 @@ impl Yahoo {
     }
 }
 
-impl service::Fetches for Yahoo {
+impl super::Fetches for Yahoo {
     fn fetch_price(
         &self,
         client: &reqwest::blocking::Client,
