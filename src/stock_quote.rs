@@ -38,18 +38,18 @@ impl StockQuote {
     }
 }
 
-trait Fetches {
-    fn fetch_price(
-        &self,
-        client: &reqwest::blocking::Client,
-        ticker: &str,
-    ) -> Result<serde_json::Value, reqwest::Error>;
-}
-
 fn get_service(service_type: &QuoteService) -> Box<dyn Fetches> {
     // factory design pattern
     match service_type {
         QuoteService::Stooq => Box::new(service_stooq::Stooq::new()),
         QuoteService::Yahoo => Box::new(service_yahoo::Yahoo::new()),
     }
+}
+
+trait Fetches {
+    fn fetch_price(
+        &self,
+        client: &reqwest::blocking::Client,
+        ticker: &str,
+    ) -> Result<serde_json::Value, reqwest::Error>;
 }

@@ -48,8 +48,7 @@ impl super::Fetches for Stooq {
         let result = client.get(url).headers(self.get_headers()).send()?.text()?;
         let html = scraper::Html::parse_fragment(&result);
 
-        Ok(
-            serde_json::from_str(&self.scrap_price(html, ticker).unwrap()).unwrap(),
-        )
+        let price = self.scrap_price(html, ticker).unwrap();
+        Ok(serde_json::from_str(&price).unwrap())
     }
 }

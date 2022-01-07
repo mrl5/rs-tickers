@@ -19,8 +19,8 @@ impl super::Fetches for Yahoo {
         );
         let result = client.get(url).send()?.text()?;
         let x: serde_json::Value = serde_json::from_str(&result).unwrap();
-        Ok(
-            x["chart"]["result"][0]["meta"]["regularMarketPrice"].to_owned(),
-        )
+
+        let price = &x["chart"]["result"][0]["meta"]["regularMarketPrice"];
+        Ok(price.to_owned())
     }
 }

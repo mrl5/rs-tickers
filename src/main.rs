@@ -2,6 +2,7 @@ use std::env;
 use std::fs;
 use std::io;
 use std::io::prelude::*;
+use std::process;
 
 mod http;
 mod input;
@@ -12,7 +13,7 @@ const OUT_DIR: &str = "/tmp/watchlist_quotes";
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    std::process::exit(match run_app(&args) {
+    process::exit(match run_app(&args) {
         Ok(_) => 0,
         Err(e) => {
             eprintln!("error: {}", e);
@@ -30,7 +31,7 @@ fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
 
         println!("[i] fetching current price of {} ...", sq.get_symbol());
         match sq.fetch_price(&client) {
-            Ok(p) => write_result(sq.get_symbol(), &p),
+            Ok(p) => write_price(sq.get_symbol(), &p),
             Err(e) => eprintln!("couldnt get price for {}: {}", sq.get_symbol(), e),
         };
     }
@@ -38,11 +39,11 @@ fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
     Ok(())
 }
 
-fn write_result(symbol: &str, result: &serde_json::Value) {
+fn write_price(symbol: &str, price: &serde_json::Value) {
     let path = format!("{}/{}.txt", OUT_DIR, symbol);
     let mut file = fs::File::create(&path).unwrap();
 
     println!("[i] writing current price of {} to {} ...", symbol, &path);
-    file.write_all(&serde_json::to_string(result).unwrap().as_bytes())
-        .unwrap();
+    let s = serde_json::to_string(price).unwrap();
+    file.write_all(&s.as_bytes()).unwrap();
 }
