@@ -123,6 +123,7 @@ dependencies = [
  "log",
  "once_cell",
  "rs-tickers",
+ "serde",
  "serde_json",
  "structopt",
 ]

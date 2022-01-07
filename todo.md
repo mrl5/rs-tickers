@@ -11,7 +11,7 @@
 
 ## Output
 * [x] It should write results to files
-* [ ] It should allow writing to stdout
+* [x] It should allow writing to stdout
 
 ## Logging
 * [x] It should log

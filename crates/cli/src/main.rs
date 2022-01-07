@@ -1,6 +1,5 @@
 use std::fs;
 use std::io;
-use std::io::prelude::*;
 use std::path::PathBuf;
 use std::process;
 use structopt::{clap::AppSettings, StructOpt};
@@ -8,6 +7,7 @@ use rs_tickers::http;
 use rs_tickers::stock_quote;
 
 mod input;
+mod output;
 
 const DEFAULT_OUT_DIR: &str = "/tmp/watchlist_quotes";
 
@@ -23,7 +23,10 @@ struct CliOptions {
     #[structopt(parse(from_os_str))]
     pub(crate) json_path: Option<PathBuf>,
 
-    #[structopt(short = "o", long = "output-dir", default_value = DEFAULT_OUT_DIR)]
+    #[structopt(short = "o", long = "to-stdout")]
+    write_to_stdout: bool,
+
+    #[structopt(short = "d", long = "output-dir", default_value = DEFAULT_OUT_DIR)]
     out_dir: String,
 }
 
@@ -53,19 +56,14 @@ fn run_app(opts: CliOptions) -> Result<(), io::Error> {
         };
 
         match sq.fetch_price(&client) {
-            Ok(p) => write_price(&out_dir, sq.get_symbol(), &p),
+            Ok(p) => if opts.write_to_stdout {
+                output::write_to_stdout(sq.get_symbol(), &p);
+            } else {
+                output::write_to_file(&out_dir, sq.get_symbol(), &p);
+            },
             Err(e) => log::error!("couldnt get price for {}: {}", sq.get_symbol(), e),
         };
     }
 
     Ok(())
-}
-
-fn write_price(out_dir: &str, symbol: &str, price: &serde_json::Value) {
-    let path = format!("{}/{}.txt", out_dir, symbol);
-    let mut file = fs::File::create(&path).unwrap();
-
-    log::info!("writing current price of {} to {} ...", symbol, &path);
-    let s = serde_json::to_string(price).unwrap();
-    file.write_all(&s.as_bytes()).unwrap();
 }
