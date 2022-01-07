@@ -20,4 +20,4 @@
 ## CLI
 * [x] It should print help
 * [x] It should allow defining log levels
-* [ ] It should allow defining output dir
+* [x] It should allow defining output dir

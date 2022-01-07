@@ -11,6 +11,10 @@ Gets stock quotes for provided tickers
 
 ## Usage
 
+```bash
+$ rs-tickers --help
+```
+
 To see logs use `RUST_LOG` env variable. Possible values are defined in
 https://docs.rs/log/latest/log/enum.Level.html
 
@@ -26,8 +30,8 @@ $ RUST_LOG=info rs-tickers example/watchlist.txt
 $ cat example/watchlist.json | jq -c '.[]' | rs-tickers
 ```
 
-It will create `ticker.txt` files in `/tmp/watchlist_quotes` that later can be
-read by the spreadsheet.
+It will create `ticker.txt` files in `/tmp/watchlist_quotes` (unless other dir
+is given) that later can be read by the spreadsheet.
 
 
 ### UC1: Integration with your favorite spreadsheet program

@@ -1,20 +1,20 @@
 use std::fs::File;
 use std::io::{self, BufRead};
+use std::path::PathBuf;
 use atty::Stream;
 use once_cell::sync::Lazy;
-use super::CliOptions;
 
 static STDIN: Lazy<io::Stdin> = Lazy::new(io::stdin);
 
 pub fn get_lines(
-    opts: CliOptions,
+    path: Option<PathBuf>,
 ) -> Result<
     either::Either<io::Lines<io::BufReader<File>>, io::Lines<io::StdinLock<'static>>>,
     io::Error,
 > {
     let lines;
 
-    match opts.json_path {
+    match path {
         Some(p) => {
             let file = File::open(p)?;
             let l = io::BufReader::new(file).lines();
