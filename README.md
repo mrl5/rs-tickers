@@ -42,4 +42,4 @@ spreadsheet cell like this:
 $ cargo build --release
 ```
 
-Your binary will be in `target/release/rs-tickers`.
+Your binary will be in `target/release/cli`.

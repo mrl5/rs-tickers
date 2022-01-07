@@ -18,6 +18,6 @@
 [ ] It should support many log levels
 
 ## CLI
-[ ] It should print help
+[X] It should print help
 [ ] It should allow defining log levels
 [ ] It should allow defining output dir

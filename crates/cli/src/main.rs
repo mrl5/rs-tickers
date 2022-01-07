@@ -1,19 +1,33 @@
-use std::env;
 use std::fs;
 use std::io;
 use std::io::prelude::*;
+use std::path::PathBuf;
 use std::process;
+use structopt::{clap::AppSettings, StructOpt};
+use rs_tickers::http;
+use rs_tickers::stock_quote;
 
-mod http;
 mod input;
-mod stock_quote;
 
 const OUT_DIR: &str = "/tmp/watchlist_quotes";
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
+#[derive(StructOpt)]
+#[structopt(
+    name = "rs-tickers",
+    about = "Gets stock quotes for provided tickers",
+    global_settings(&[
+      AppSettings::ColoredHelp
+    ]),
+)]
+pub struct CliOptions {
+    #[structopt(parse(from_os_str))]
+    pub(crate) json_path: Option<PathBuf>,
+}
 
-    process::exit(match run_app(&args) {
+fn main() {
+    let options = CliOptions::from_args();
+
+    process::exit(match run_app(options) {
         Ok(_) => 0,
         Err(e) => {
             eprintln!("error: {}", e);
@@ -22,11 +36,11 @@ fn main() {
     });
 }
 
-fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
+fn run_app(opts: CliOptions) -> Result<(), io::Error> {
     fs::create_dir_all(OUT_DIR)?;
     let client = http::get_client().unwrap();
 
-    for line in input::get_lines(args)? {
+    for line in input::get_lines(opts)? {
         let sq: stock_quote::StockQuote = match serde_json::from_str(&line?) {
             Ok(json) => json,
             Err(e) => return Err(io::Error::new(io::ErrorKind::Other, e)),
