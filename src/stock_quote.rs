@@ -18,7 +18,7 @@ pub struct StockQuote {
 }
 
 impl StockQuote {
-    pub fn get_symbol(&self) -> &String {
+    pub fn get_symbol(&self) -> &str {
         &self.symbol
     }
 
@@ -30,7 +30,7 @@ impl StockQuote {
         service.fetch_price(client, &self.id())
     }
 
-    fn id(&self) -> &String {
+    fn id(&self) -> &str {
         match &self.ticker {
             Some(t) => t,
             None => &self.symbol,
