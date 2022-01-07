@@ -115,7 +115,7 @@ dependencies = [
 
 [[package]]
 name = "cli"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "atty",
  "either",
@@ -1096,7 +1096,7 @@ dependencies = [
 
 [[package]]
 name = "rs-tickers"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "log",
  "reqwest",

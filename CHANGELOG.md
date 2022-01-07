@@ -1,3 +1,15 @@
+# [0.3.0](https://github.com/mrl5/rs-tickers/compare/v0.2.1...v0.3.0) (2022-01-07)
+
+
+### Features
+
+* **cli:** it should allow defining output dir ([ef2b634](https://github.com/mrl5/rs-tickers/commit/ef2b6341a8bcc671cbd843e21a1266019c66a320))
+* **cli:** it should allow writing to stdout ([5c851f0](https://github.com/mrl5/rs-tickers/commit/5c851f0f6199dd9e85d0f120878766e5d7fbee5b))
+* **cli:** richer CLI with --help and --version ([5e4ecc0](https://github.com/mrl5/rs-tickers/commit/5e4ecc096083222b83affa8058bbcb65dac35c9e))
+* **log:** control log level ([41d12b1](https://github.com/mrl5/rs-tickers/commit/41d12b1765b201cdf9834f00b1b6be0a53a70cef))
+
+
+
 ## [0.2.1](https://github.com/mrl5/rs-tickers/compare/v0.2.0...v0.2.1) (2022-01-07)
 
 
