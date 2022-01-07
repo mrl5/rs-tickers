@@ -3,10 +3,10 @@ use std::fs;
 use std::io;
 use std::io::prelude::*;
 use std::process;
+use rs_tickers::http;
+use rs_tickers::stock_quote;
 
-mod http;
 mod input;
-mod stock_quote;
 
 const OUT_DIR: &str = "/tmp/watchlist_quotes";
 
