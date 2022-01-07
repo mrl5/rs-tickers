@@ -27,6 +27,7 @@ impl StockQuote {
         client: &reqwest::blocking::Client,
     ) -> Result<serde_json::Value, reqwest::Error> {
         let service = get_service(&self.source);
+        log::info!("fetching current price of {} ...", &self.symbol);
         service.fetch_price(client, &self.id())
     }
 

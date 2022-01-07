@@ -25,8 +25,10 @@ pub struct CliOptions {
 }
 
 fn main() {
-    let options = CliOptions::from_args();
+    env_logger::init();
+    log::debug!("initialized logger");
 
+    let options = CliOptions::from_args();
     process::exit(match run_app(options) {
         Ok(_) => 0,
         Err(e) => {
@@ -46,10 +48,9 @@ fn run_app(opts: CliOptions) -> Result<(), io::Error> {
             Err(e) => return Err(io::Error::new(io::ErrorKind::Other, e)),
         };
 
-        println!("[i] fetching current price of {} ...", sq.get_symbol());
         match sq.fetch_price(&client) {
             Ok(p) => write_price(sq.get_symbol(), &p),
-            Err(e) => eprintln!("couldnt get price for {}: {}", sq.get_symbol(), e),
+            Err(e) => log::error!("couldnt get price for {}: {}", sq.get_symbol(), e),
         };
     }
 
@@ -60,7 +61,7 @@ fn write_price(symbol: &str, price: &serde_json::Value) {
     let path = format!("{}/{}.txt", OUT_DIR, symbol);
     let mut file = fs::File::create(&path).unwrap();
 
-    println!("[i] writing current price of {} to {} ...", symbol, &path);
+    log::info!("writing current price of {} to {} ...", symbol, &path);
     let s = serde_json::to_string(price).unwrap();
     file.write_all(&s.as_bytes()).unwrap();
 }

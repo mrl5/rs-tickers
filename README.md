@@ -11,11 +11,14 @@ Gets stock quotes for provided tickers
 
 ## Usage
 
+To see logs use `RUST_LOG` env variable. Possible values are defined in
+https://docs.rs/log/latest/log/enum.Level.html
+
 ### Fetching stock quotes from CLI
 
 You can pass path to a file ...
 ```bash
-$ rs-tickers example/watchlist.txt
+$ RUST_LOG=info rs-tickers example/watchlist.txt
 ```
 
 ... or pipe data from another process

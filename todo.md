@@ -15,9 +15,9 @@
 
 ## Logging
 [X] It should log
-[ ] It should support many log levels
+[X] It should support many log levels
 
 ## CLI
 [X] It should print help
-[ ] It should allow defining log levels
+[X] It should allow defining log levels
 [ ] It should allow defining output dir
