@@ -27,7 +27,10 @@ fn run_app(args: &Vec<String>) -> Result<(), io::Error> {
     let client = http::get_client().unwrap();
 
     for line in input::get_lines(args)? {
-        let sq: stock_quote::StockQuote = serde_json::from_str(&line?).unwrap(); // todo: io::Error when unable to parse
+        let sq: stock_quote::StockQuote = match serde_json::from_str(&line?) {
+            Ok(json) => json,
+            Err(e) => return Err(io::Error::new(io::ErrorKind::Other, e)),
+        };
 
         println!("[i] fetching current price of {} ...", sq.get_symbol());
         match sq.fetch_price(&client) {

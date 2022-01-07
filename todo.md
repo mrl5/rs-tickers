@@ -2,7 +2,7 @@
 [X] It should read line-by-line
 [X] It should parse each line as json
 [X] It should validate lines with json schema
-[ ] It should gracefully exit on bad input
+[X] It should gracefully exit on bad input
 
 ## HTTP req
 [X] It should have HTTP persistent connection when possible
