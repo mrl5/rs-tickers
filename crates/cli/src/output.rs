@@ -1,12 +1,17 @@
 use std::fs;
 use std::io::prelude::*;
+use std::path::PathBuf;
 use serde::{Serialize, Deserialize};
 
-pub fn write_to_file(out_dir: &str, symbol: &str, price: &serde_json::Value) {
-    let path = format!("{}/{}.txt", out_dir, symbol);
+pub fn write_to_file(out_dir: &PathBuf, symbol: &str, price: &serde_json::Value) {
+    let path = out_dir.join(format!("{}.txt", symbol));
     let mut file = fs::File::create(&path).unwrap();
 
-    log::info!("writing current price of {} to {} ...", symbol, &path);
+    log::info!(
+        "writing current price of {} to {} ...",
+        symbol,
+        &path.into_os_string().into_string().unwrap()
+    );
     let s = serde_json::to_string(price).unwrap();
     file.write_all(&s.as_bytes()).unwrap();
 }

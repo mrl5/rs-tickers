@@ -27,7 +27,7 @@ struct CliOptions {
     write_to_stdout: bool,
 
     #[structopt(short = "d", long = "output-dir", default_value = DEFAULT_OUT_DIR)]
-    out_dir: String,
+    out_dir: PathBuf,
 }
 
 fn main() {
