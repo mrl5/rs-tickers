@@ -1,3 +1,4 @@
+use std::error::Error;
 use serde::{Serialize, Deserialize};
 
 mod service_stooq;
@@ -25,7 +26,7 @@ impl StockQuote {
     pub fn fetch_price(
         &self,
         client: &reqwest::blocking::Client,
-    ) -> Result<serde_json::Value, reqwest::Error> {
+    ) -> Result<serde_json::Value, Box<dyn Error>> {
         let service = get_service(&self.source);
         log::info!("fetching current price of {} ...", &self.symbol);
         service.fetch_price(client, &self.id())
@@ -52,5 +53,5 @@ trait Fetches {
         &self,
         client: &reqwest::blocking::Client,
         ticker: &str,
-    ) -> Result<serde_json::Value, reqwest::Error>;
+    ) -> Result<serde_json::Value, Box<dyn Error>>;
 }

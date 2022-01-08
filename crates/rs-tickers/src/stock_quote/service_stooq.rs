@@ -1,3 +1,6 @@
+use std::error::Error;
+use std::fmt::Display;
+
 pub struct Stooq {}
 
 impl Stooq {
@@ -16,7 +19,7 @@ impl Stooq {
         headers
     }
 
-    fn scrap_price(&self, html: scraper::Html, ticker: &str) -> Option<String> {
+    fn scrap_price(&self, html: scraper::Html, ticker: &str) -> Result<String, SelectorError> {
         let mut price: Option<String> = None;
         let cryptic_category_ids: Vec<u8> = (2..=5).collect();
 
@@ -34,7 +37,10 @@ impl Stooq {
             }
         }
 
-        price
+        match price {
+            Some(v) => Ok(v),
+            None => Err(SelectorError::new(&format!("couldn't scrap price for {}", ticker))),
+        }
     }
 }
 
@@ -43,12 +49,31 @@ impl super::Fetches for Stooq {
         &self,
         client: &reqwest::blocking::Client,
         ticker: &str,
-    ) -> Result<serde_json::Value, reqwest::Error> {
+    ) -> Result<serde_json::Value, Box<dyn Error>> {
         let url = format!("https://stooq.pl/q/?s={}", ticker);
         let result = client.get(url).headers(self.get_headers()).send()?.text()?;
         let html = scraper::Html::parse_fragment(&result);
 
-        let price = self.scrap_price(html, ticker).unwrap();
-        Ok(serde_json::from_str(&price).unwrap())
+        let price = self.scrap_price(html, ticker)?;
+        Ok(serde_json::from_str(&price)?)
     }
+}
+
+#[derive(Debug)]
+struct SelectorError {
+    msg: String,
+}
+
+impl SelectorError {
+    fn new(msg: &str) -> Self {
+        Self { msg: msg.to_owned() }
+    }
+}
+
+impl Error for SelectorError {}
+
+impl Display for SelectorError {
+  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    write!(f, "{}", &self.msg)
+  }
 }

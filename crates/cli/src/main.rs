@@ -1,5 +1,5 @@
+use std::error::Error;
 use std::fs;
-use std::io;
 use std::path::PathBuf;
 use std::process;
 use structopt::{clap::AppSettings, StructOpt};
@@ -44,16 +44,13 @@ fn main() {
     });
 }
 
-fn run_app(opts: CliOptions) -> Result<(), io::Error> {
+fn run_app(opts: CliOptions) -> Result<(), Box<dyn Error>> {
     let out_dir = opts.out_dir.to_owned();
-    let client = http::get_client().unwrap();
+    let client = http::get_client()?;
 
     fs::create_dir_all(&out_dir)?;
     for line in input::get_lines(opts.json_path)? {
-        let sq: stock_quote::StockQuote = match serde_json::from_str(&line?) {
-            Ok(json) => json,
-            Err(e) => return Err(io::Error::new(io::ErrorKind::Other, e)),
-        };
+        let sq: stock_quote::StockQuote = serde_json::from_str(&line?)?;
 
         match sq.fetch_price(&client) {
             Ok(p) => if opts.write_to_stdout {
@@ -61,7 +58,7 @@ fn run_app(opts: CliOptions) -> Result<(), io::Error> {
             } else {
                 output::write_to_file(&out_dir, sq.get_symbol(), &p);
             },
-            Err(e) => log::error!("couldnt get price for {}: {}", sq.get_symbol(), e),
+            Err(e) => log::error!("couldn't get price for {}: {}", sq.get_symbol(), e),
         };
     }
 
