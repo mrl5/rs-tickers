@@ -1,10 +1,10 @@
+use rs_tickers::http;
+use rs_tickers::stock_quote;
 use std::error::Error;
 use std::fs;
 use std::path::PathBuf;
 use std::process;
 use structopt::{clap::AppSettings, StructOpt};
-use rs_tickers::http;
-use rs_tickers::stock_quote;
 
 mod input;
 mod output;
@@ -45,7 +45,7 @@ fn main() {
 }
 
 fn run_app(opts: CliOptions) -> Result<(), Box<dyn Error>> {
-    let out_dir = opts.out_dir.to_owned();
+    let out_dir = opts.out_dir;
     let client = http::get_client()?;
 
     fs::create_dir_all(&out_dir)?;
@@ -53,11 +53,13 @@ fn run_app(opts: CliOptions) -> Result<(), Box<dyn Error>> {
         let sq: stock_quote::StockQuote = serde_json::from_str(&line?)?;
 
         match sq.fetch_price(&client) {
-            Ok(p) => if opts.write_to_stdout {
-                output::write_to_stdout(sq.get_symbol(), &p);
-            } else {
-                output::write_to_file(&out_dir, sq.get_symbol(), &p);
-            },
+            Ok(p) => {
+                if opts.write_to_stdout {
+                    output::write_to_stdout(sq.get_symbol(), &p);
+                } else {
+                    output::write_to_file(out_dir.to_owned(), sq.get_symbol(), &p);
+                }
+            }
             Err(e) => log::error!("couldn't get price for {}: {}", sq.get_symbol(), e),
         };
     }

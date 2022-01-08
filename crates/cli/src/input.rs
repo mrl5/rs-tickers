@@ -1,8 +1,8 @@
+use atty::Stream;
+use once_cell::sync::Lazy;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::PathBuf;
-use atty::Stream;
-use once_cell::sync::Lazy;
 
 static STDIN: Lazy<io::Stdin> = Lazy::new(io::stdin);
 

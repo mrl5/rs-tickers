@@ -14,8 +14,7 @@ impl super::Fetches for Yahoo {
         client: &reqwest::blocking::Client,
         ticker: &str,
     ) -> Result<serde_json::Value, Box<dyn Error>> {
-        let url =
-            format!(
+        let url = format!(
             "https://query1.finance.yahoo.com/v8/finance/chart/{}",
             ticker,
         );

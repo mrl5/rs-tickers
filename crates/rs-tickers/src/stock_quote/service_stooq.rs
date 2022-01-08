@@ -39,7 +39,10 @@ impl Stooq {
 
         match price {
             Some(v) => Ok(v),
-            None => Err(SelectorError::new(&format!("couldn't scrap price for {}", ticker))),
+            None => Err(SelectorError::new(&format!(
+                "couldn't scrap price for {}",
+                ticker
+            ))),
         }
     }
 }
@@ -66,14 +69,16 @@ struct SelectorError {
 
 impl SelectorError {
     fn new(msg: &str) -> Self {
-        Self { msg: msg.to_owned() }
+        Self {
+            msg: msg.to_owned(),
+        }
     }
 }
 
 impl Error for SelectorError {}
 
 impl Display for SelectorError {
-  fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-    write!(f, "{}", &self.msg)
-  }
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", &self.msg)
+    }
 }

@@ -1,5 +1,5 @@
+use serde::{Deserialize, Serialize};
 use std::error::Error;
-use serde::{Serialize, Deserialize};
 
 mod service_stooq;
 mod service_yahoo;
@@ -29,7 +29,7 @@ impl StockQuote {
     ) -> Result<serde_json::Value, Box<dyn Error>> {
         let service = get_service(&self.source);
         log::info!("fetching current price of {} ...", &self.symbol);
-        service.fetch_price(client, &self.id())
+        service.fetch_price(client, self.id())
     }
 
     fn id(&self) -> &str {
