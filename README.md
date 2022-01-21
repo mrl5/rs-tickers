@@ -12,7 +12,7 @@ Gets stock quotes for provided tickers
 ## Usage
 
 ```bash
-$ rs-tickers --help
+$ tickers --help
 ```
 
 To see logs use `RUST_LOG` env variable. Possible values are defined in
@@ -46,7 +46,7 @@ spreadsheet cell like this:
 ## HOWTO build
 
 ```bash
-$ cargo build --release
+$ cargo build --release && cargo install --path crates/cli/
 ```
 
-Your binary will be in `target/release/cli`.
+Your binary is `~/.cargo/bin/tickers`.
