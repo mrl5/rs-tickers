@@ -1,3 +1,23 @@
+## [0.3.1](https://github.com/mrl5/rs-tickers/compare/v0.3.0...v0.3.1) (2022-03-04)
+
+
+### Bug Fixes
+
+* **cli:** use PathBuf for OS paths ([2495383](https://github.com/mrl5/rs-tickers/commit/249538315b2249541e2491c9737ff344e59555d5))
+* more robust error handling ([4531ca3](https://github.com/mrl5/rs-tickers/commit/4531ca37b04c543a409557428b0a2b428d01a95b))
+
+
+
+## [0.3.1](https://github.com/mrl5/rs-tickers/compare/v0.3.0...v0.3.1) (2022-03-04)
+
+
+### Bug Fixes
+
+* **cli:** use PathBuf for OS paths ([2495383](https://github.com/mrl5/rs-tickers/commit/249538315b2249541e2491c9737ff344e59555d5))
+* more robust error handling ([4531ca3](https://github.com/mrl5/rs-tickers/commit/4531ca37b04c543a409557428b0a2b428d01a95b))
+
+
+
 # [0.3.0](https://github.com/mrl5/rs-tickers/compare/v0.2.1...v0.3.0) (2022-01-07)
 
 
