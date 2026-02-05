@@ -12,23 +12,21 @@ pub fn get_lines(
     either::Either<io::Lines<io::BufReader<File>>, io::Lines<io::StdinLock<'static>>>,
     io::Error,
 > {
-    let lines;
-
-    match path {
+    let lines = match path {
         Some(p) => {
             let file = File::open(p)?;
             let l = io::BufReader::new(file).lines();
-            lines = either::Either::Left(l);
+            either::Either::Left(l)
         }
         None => {
             if atty::is(Stream::Stdin) {
-                return Err(io::Error::new(io::ErrorKind::Other, "stdin not redirected"));
+                return Err(io::Error::other("stdin not redirected"));
             }
 
             let l = STDIN.lock().lines();
-            lines = either::Either::Right(l);
+            either::Either::Right(l)
         }
-    }
+    };
 
     Ok(lines)
 }
