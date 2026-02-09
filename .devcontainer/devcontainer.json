@@ -3,6 +3,5 @@
   "extensions": [
     "rust-lang.rust-analyzer"
   ],
-  "forwardPorts": [4321], // forward ports as needed
   "runArgs": ["--name", "rs-tickers"],
 }

@@ -1,4 +1,4 @@
-FROM docker.io/library/rust:bookworm
+FROM docker.io/library/rust:trixie
 
 # Setup dev user
 ARG USERNAME=dev
